@@ -13,7 +13,7 @@
 	2. compress(that.data.uploadlog, function (data){console.log(data)})
       //url 图片选择后的路径  callback 回调函数 知道压缩完返回图片路径
       function compress(url,callback){
-        //最大尺寸的设置
+        //最大尺寸的设置  由于目前还不能获取图片的大小这参数  故采用图片宽高做判断依据是否压缩图片
         let MAXSIZE = 600;
         wx.getImageInfo({
         src: url,
