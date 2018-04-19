@@ -12,22 +12,27 @@
 	  }
 	2. compress(that.data.uploadlog, function (data){console.log(data)})
       //url 图片选择后的路径  callback 回调函数 知道压缩完返回图片路径
-      function compress(url,callback){
+       function compress(url,callback){
+        //最大尺寸的设置
+        let MAXSIZE = 600;
         wx.getImageInfo({
         src: url,
         success: function (res) {
         var ctx = wx.createCanvasContext('photo_canvas');
-        var ratio = 2;
         var canvasWidth = res.width
         var canvasHeight = res.height;
-        console.log(canvasHeight)
-        // 保证宽高均在要控制的范围以内
-        while (canvasWidth > 600 || canvasHeight > 600) {
+        // console.log(canvasWidth)
+        // console.log(canvasHeight)
+        if (canvasWidth > MAXSIZE && canvasWidth >= canvasHeight) {
           //比例取整
-           canvasWidth = Math.floor(res.width / ratio)
-          canvasHeight = Math.floor(res.height / ratio)
-          ratio++;
+          canvasWidth = MAXSIZE
+          canvasHeight = Math.floor(res.height * MAXSIZE / canvasWidth)
+        } else if (canvasHeight > MAXSIZE && canvasHeight > canvasWidth){
+          canvasWidth = Math.floor(res.width * MAXSIZE / canvasHeight)
+          canvasHeight = MAXSIZE
         }
+        // console.log(canvasWidth)
+        // console.log(canvasHeight)
         that.setData({
           canvasWidth: canvasWidth,
           canvasHeight: canvasHeight
@@ -52,5 +57,6 @@
           console.log(error)
         }
         })
+      }
 </body>
 </html>
