@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	1.<canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-3000px;top:-300px;"></canvas> 
+	2. compress(that.data.uploadlog, function (data){console.log(data)})
+      //url 图片选择后的路径  callback 回调函数 知道压缩完返回图片路径
+      function compress(url,callback){
+        wx.getImageInfo({
+        src: url,
+        success: function (res) {
+        var ctx = wx.createCanvasContext('photo_canvas');
+        var ratio = 2;
+        var canvasWidth = res.width
+        var canvasHeight = res.height;
+        console.log(canvasHeight)
+        // 保证宽高均在200以内
+        while (canvasWidth > 600 || canvasHeight > 600) {
+          //比例取整
+          canvasWidth = Math.trunc(res.width / ratio)
+          canvasHeight = Math.trunc(res.height / ratio)
+          ratio++;
+        }
+        that.setData({
+          canvasWidth: canvasWidth,
+          canvasHeight: canvasHeight
+        })//设置canvas尺寸
+        ctx.drawImage(url, 0, 0, canvasWidth, canvasHeight)
+        ctx.draw()
+        //下载canvas图片
+        setTimeout(function () {
+          wx.canvasToTempFilePath({
+            canvasId: 'photo_canvas',
+            success: function (res) {
+              //返回压缩后的路径
+              callback(res.tempFilePath)
+            },
+            fail: function (error) {
+              console.log(error)
+            }
+          })
+        }, 100)
+        } ,
+        fail: function (error) {
+          console.log(error)
+        }
+        })
+</body>
+</html>
