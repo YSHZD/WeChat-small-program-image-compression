@@ -24,8 +24,8 @@
         // 保证宽高均在200以内
         while (canvasWidth > 600 || canvasHeight > 600) {
           //比例取整
-          canvasWidth = Math.trunc(res.width / ratio)
-          canvasHeight = Math.trunc(res.height / ratio)
+           canvasWidth = Math.floor(res.width / ratio)
+          canvasHeight = Math.floor(res.height / ratio)
           ratio++;
         }
         that.setData({
