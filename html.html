@@ -21,7 +21,7 @@
         var canvasWidth = res.width
         var canvasHeight = res.height;
         console.log(canvasHeight)
-        // 保证宽高均在200以内
+        // 保证宽高均在要控制的范围以内
         while (canvasWidth > 600 || canvasHeight > 600) {
           //比例取整
            canvasWidth = Math.floor(res.width / ratio)
